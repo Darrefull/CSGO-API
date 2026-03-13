@@ -33,21 +33,21 @@ export const LANGUAGES_URL = [
         folder: "zh-CN",
         url: getLanguageUrl("schinese"),
     },
-    // {
-    //     language: "portuguese (Brazil)",
-    //     folder: "pt-BR",
-    //     url: getLanguageUrl("brazilian"),
-    // },
+    {
+        language: "portuguese (Brazil)",
+        folder: "pt-BR",
+        url: getLanguageUrl("brazilian"),
+    },
     // {
     //     language: "russian",
     //     folder: "ru",
     //     url: getLanguageUrl("russian"),
     // },
-    // {
-    //     language: "spanish",
-    //     folder: "es-ES",
-    //     url: getLanguageUrl("spanish"),
-    // },
+    {
+        language: "spanish",
+        folder: "es-ES",
+        url: getLanguageUrl("spanish"),
+    },
     // {
     //     language: "bulgarian",
     //     folder: "bg",
@@ -78,11 +78,11 @@ export const LANGUAGES_URL = [
     //     folder: "fr",
     //     url: getLanguageUrl("french"),
     // },
-    // {
-    //     language: "german",
-    //     folder: "de",
-    //     url: getLanguageUrl("german"),
-    // },
+    {
+        language: "german",
+        folder: "de",
+        url: getLanguageUrl("german"),
+    },
     // {
     //     language: "greek",
     //     folder: "el",
@@ -128,11 +128,11 @@ export const LANGUAGES_URL = [
     //     folder: "pirate",
     //     url: getLanguageUrl("pirate"),
     //   },
-    // {
-    //     language: "polish",
-    //     folder: "pl",
-    //     url: getLanguageUrl("polish"),
-    // },
+    {
+        language: "polish",
+        folder: "pl",
+        url: getLanguageUrl("polish"),
+    },
     // {
     //     language: "portuguese",
     //     folder: "pt-PT",
@@ -148,11 +148,11 @@ export const LANGUAGES_URL = [
     //     folder: "zh-CN",
     //     url: getLanguageUrl("schinese_pw"),
     // },
-    // {
-    //     language: "swedish",
-    //     folder: "sv",
-    //     url: getLanguageUrl("swedish"),
-    // },
+    {
+        language: "swedish",
+        folder: "sv",
+        url: getLanguageUrl("swedish"),
+    },
     // {
     //     language: "tchinese",
     //     folder: "zh-TW",
