@@ -1,3 +1,6 @@
 # dependencies
 **/node_modules
 **/trash
+bun.lock
+
+public/api/
