@@ -4,3 +4,9 @@
 bun.lock
 
 public/api/
+
+# generation trackers (regenerated locally per run)
+imagesShaGroup.txt
+imagesShaUpdate.txt
+manifestIdGroup.txt
+manifestIdUpdate.txt
