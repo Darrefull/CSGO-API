@@ -1,26 +1,60 @@
+import axios from "axios";
+import * as fs from "fs/promises";
+import { fileURLToPath } from "url";
+
+// Base URL of a self-hosted tracker holding both trackers' static/ output
+// (items_game.json, csgo_<language>.json, manifestId.txt, imagesSha.txt,
+// images.json, default_generated.json, panorama/images/econ/...).
+// Unset -> ByMykel's public trackers, exactly as upstream.
+export const TRACKER_DATA_URL = process.env.TRACKER_DATA_URL;
+
+const FILE_TRACKER_BASE =
+    TRACKER_DATA_URL || "https://raw.githubusercontent.com/ByMykel/counter-strike-file-tracker/main/static/";
+
+const IMAGE_TRACKER_BASE =
+    TRACKER_DATA_URL || "https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/";
+
+if (TRACKER_DATA_URL) {
+    const httpAdapter = axios.getAdapter(axios.defaults.adapter ?? ["xhr", "http"]);
+
+    const toFilePath = url => {
+        try {
+            return fileURLToPath(url);
+        } catch {
+            // file://C:/... style (drive letter parsed as host)
+            return url.replace(/^file:\/\//, "");
+        }
+    };
+
+    axios.defaults.adapter = async config => {
+        const url = axios.getUri(config);
+        if (!url.startsWith("file://")) return httpAdapter(config);
+
+        const data = await fs.readFile(toFilePath(url), "utf-8");
+        return { data, status: 200, statusText: "OK", headers: {}, config };
+    };
+}
+
 const getLanguageUrl = language => {
-    return `https://raw.githubusercontent.com/ByMykel/counter-strike-file-tracker/main/static/csgo_${language}.json`;
+    return `${FILE_TRACKER_BASE}csgo_${language}.json`;
 };
 
 export const getImageUrl = path => {
-    return `https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/${path}_png.png`;
+    return `${IMAGE_TRACKER_BASE}panorama/images/${path}_png.png`;
 };
 
 export const getImageUrlSvg = path => {
-    return `https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/panorama/images/${path}.svg`;
+    return `${IMAGE_TRACKER_BASE}panorama/images/${path}.svg`;
 };
 
-export const ITEMS_GAME_URL =
-    "https://raw.githubusercontent.com/ByMykel/counter-strike-file-tracker/main/static/items_game.json";
+export const ITEMS_GAME_URL = `${FILE_TRACKER_BASE}items_game.json`;
 
 export const IMAGES_BASE_URL =
     "https://raw.githubusercontent.com/steamdatabase/gametracking-csgo/108f1682bf7eeb1420caaf2357da88b614a7e1b0/csgo/pak01_dir/resource/flash/";
 
-export const CSGO_ENGLISH_URL =
-    "https://raw.githubusercontent.com/ByMykel/counter-strike-file-tracker/main/static/csgo_english.json";
+export const CSGO_ENGLISH_URL = `${FILE_TRACKER_BASE}csgo_english.json`;
 
-export const IMAGES_INVENTORY_URL =
-    "https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/main/static/images.json";
+export const IMAGES_INVENTORY_URL = `${IMAGE_TRACKER_BASE}images.json`;
 
 export const LANGUAGES_URL = [
     {

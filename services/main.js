@@ -1,6 +1,6 @@
 import axios from "axios";
 import sha1 from "sha1";
-import { IMAGES_INVENTORY_URL, ITEMS_GAME_URL, getImageUrl } from "../constants.js";
+import { IMAGES_INVENTORY_URL, ITEMS_GAME_URL, TRACKER_DATA_URL, getImageUrl } from "../constants.js";
 import { getCollectionImage } from "./collections.js";
 import {
     filterUniqueByAttribute,
@@ -63,7 +63,9 @@ export const loadItemsGame = async () => {
 
     await axios
         .get(
-            "https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/refs/heads/main/static/default_generated.json"
+            TRACKER_DATA_URL
+                ? `${TRACKER_DATA_URL}default_generated.json`
+                : "https://raw.githubusercontent.com/ByMykel/counter-strike-image-tracker/refs/heads/main/static/default_generated.json"
         )
         .then(data => {
             state.itemsGame.alternate_icons2.weapon_icons = data.data
@@ -827,6 +829,16 @@ const getItemFromKey = key => {
 };
 
 export const getManifestId = async () => {
+    if (TRACKER_DATA_URL) {
+        return axios
+            // identity transform: manifest ids overflow Number under the default JSON parse
+            .get(`${TRACKER_DATA_URL}manifestId.txt`, { transformResponse: data => data })
+            .then(response => String(response.data).trim())
+            .catch(error => {
+                throw new Error(`Error getting manifestId`);
+            });
+    }
+
     return axios
         .get(
             "https://api.github.com/repos/ByMykel/counter-strike-file-tracker/contents/static/manifestId.txt"
@@ -841,6 +853,15 @@ export const getManifestId = async () => {
 };
 
 export const getImagesJsonSha = async () => {
+    if (TRACKER_DATA_URL) {
+        return axios
+            .get(`${TRACKER_DATA_URL}imagesSha.txt`, { transformResponse: data => data })
+            .then(response => String(response.data).trim())
+            .catch(error => {
+                throw new Error(`Error getting images.json SHA`);
+            });
+    }
+
     return axios
         .get("https://api.github.com/repos/ByMykel/counter-strike-image-tracker/contents/static/images.json")
         .then(response => {
